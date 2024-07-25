@@ -16,6 +16,7 @@
  */
 package com.kiendt.nifi.processors.clob;
 
+import com.kiendt.nifi.processors.process.ExtractOracleRecord;
 import org.apache.nifi.util.TestRunner;
 import org.apache.nifi.util.TestRunners;
 import org.junit.jupiter.api.BeforeEach;

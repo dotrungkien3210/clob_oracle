@@ -54,6 +54,13 @@
             <version>${nifi.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-extension-utils -->
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-extension-utils</artifactId>
+            <version>1.20.0</version>
+            <type>pom</type>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.nifi</groupId>
@@ -68,12 +75,6 @@
             <version>1.18.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.apache.nifi</groupId>-->
-<!--            <artifactId>nifi-utils</artifactId>-->
-<!--            <version>1.20.0</version>-->
-<!--        </dependency>-->
-
         <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-database-utils -->
         <dependency>
             <groupId>org.apache.nifi</groupId>
@@ -81,24 +82,39 @@
             <version>1.20.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-record-serialization-service-api -->
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-record-serialization-service-api</artifactId>
+            <version>1.20.0</version>
+        </dependency>
 
-        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.nifi/nifi-utils &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.nifi</groupId>-->
-<!--            <artifactId>nifi-utils</artifactId>-->
-<!--            <version>1.20.0</version>-->
-<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-extension-utils -->
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-extension-utils</artifactId>
+            <version>1.20.0</version>
+            <type>pom</type>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-avro-processors -->
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-avro-processors</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+
 
 
         <!--        <dependency>-->
 <!--            <groupId>org.slf4j</groupId>-->
 <!--            <artifactId>slf4j-simple</artifactId>-->
-<!--            <scope>test</scope>-->
+<!--            <scopee>test</scope>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
