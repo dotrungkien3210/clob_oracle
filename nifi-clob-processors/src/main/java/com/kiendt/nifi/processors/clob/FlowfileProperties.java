@@ -16,17 +16,6 @@ public class FlowfileProperties {
             .identifiesControllerService(DBCPService.class)
             .build();
 
-    public static final PropertyDescriptor SQL_PRE_QUERY = new PropertyDescriptor.Builder()
-            .name("sql-pre-query")
-            .displayName("SQL Pre-Query")
-            .description("A semicolon-delimited list of queries executed before the main SQL query is executed. " +
-                    "For example, set session properties before main query. " +
-                    "It's possible to include semicolons in the statements themselves by escaping them with a backslash ('\\;'). " +
-                    "Results/outputs from these queries will be suppressed if there are no errors.")
-            .required(false)
-            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-            .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
-            .build();
 
     public static final PropertyDescriptor SQL_SELECT_QUERY = new PropertyDescriptor.Builder()
             .name("SQL select query")
@@ -40,17 +29,6 @@ public class FlowfileProperties {
             .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
             .build();
 
-    public static final PropertyDescriptor SQL_POST_QUERY = new PropertyDescriptor.Builder()
-            .name("sql-post-query")
-            .displayName("SQL Post-Query")
-            .description("A semicolon-delimited list of queries executed after the main SQL query is executed. " +
-                    "Example like setting session properties after main query. " +
-                    "It's possible to include semicolons in the statements themselves by escaping them with a backslash ('\\;'). " +
-                    "Results/outputs from these queries will be suppressed if there are no errors.")
-            .required(false)
-            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-            .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
-            .build();
 
     public static final PropertyDescriptor QUERY_TIMEOUT = new PropertyDescriptor.Builder()
             .name("Max Wait Time")
