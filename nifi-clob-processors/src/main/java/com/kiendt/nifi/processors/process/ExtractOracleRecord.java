@@ -95,6 +95,7 @@ public class ExtractOracleRecord extends AbstractProcessor {
             final Integer autoCommit = context.getProperty(FlowfileProperties.AUTO_COMMIT).evaluateAttributeExpressions().asInteger();
             final StopWatch stopWatch = new StopWatch(true);
             final String selectQuery;
+        }
 
     }
 }
