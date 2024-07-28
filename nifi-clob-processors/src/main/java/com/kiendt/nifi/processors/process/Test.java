@@ -1,39 +1,82 @@
 package com.kiendt.nifi.processors.process;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.io.StringWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Test {
+    public static void main(String[] args) {
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String user = "sys as sysdba";
+        String password = "trungkien123";
 
-    public void process(final OutputStream out) throws IOException {
-        try {
-            logger.debug("Executing query {}", selectQuery);
-            final ResultSet resultSet = st.executeQuery(selectQuery);
-            List<Map<String, Object>> records = convertToRecords(resultSet);
-            writeRecordsToOutput(records, out);
-        } catch (final SQLException e) {
-            throw new ProcessException(e);
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             Statement statement = connection.createStatement()) {
+
+//            statement.execute("CREATE TABLE test (id INT PRIMARY KEY, name VARCHAR(255))");
+//            statement.execute("INSERT INTO test VALUES (1, 'John Doe')");
+//            statement.execute("INSERT INTO test VALUES (2, 'Jane Doe')");
+
+            String selectQuery = "SELECT * FROM test";
+            AtomicInteger nrOfRows = new AtomicInteger(0);
+
+            FileWriter out = new FileWriter("output.json");
+            try {
+
+                ResultSet resultSet = statement.executeQuery(selectQuery);
+                String result = resultSetToJson(resultSet);
+                System.out.println(result);
+//                nrOfRows.set(2); // Simulate number of rows processed
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            out.close();
+            System.out.println("Number of rows processed: " + nrOfRows.get());
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private List<Map<String, Object>> convertToRecords(ResultSet resultSet) throws SQLException {
-        List<Map<String, Object>> records = new ArrayList<>();
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        int columnCount = metaData.getColumnCount();
 
-        while (resultSet.next()) {
-            Map<String, Object> record = new HashMap<>();
-            for (int i = 1; i <= columnCount; i++) {
-                record.put(metaData.getColumnName(i), resultSet.getObject(i));
+
+    public static String resultSetToJson(ResultSet resultSet) throws SQLException {
+        StringWriter writer = new StringWriter();
+        JsonFactory jsonFactory = new JsonFactory();
+
+        try (JsonGenerator jsonGenerator = jsonFactory.createGenerator(writer)) {
+            jsonGenerator.writeStartArray();
+            int columnCount = resultSet.getMetaData().getColumnCount();
+
+            while (resultSet.next()) {
+                jsonGenerator.writeStartObject();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = resultSet.getMetaData().getColumnName(i);
+                    Object columnValue = resultSet.getObject(i);
+                    jsonGenerator.writeObjectField(columnName, columnValue);
+                }
+                jsonGenerator.writeEndObject();
             }
-            records.add(record);
+
+            jsonGenerator.writeEndArray();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return records;
-    }
-
-    private void writeRecordsToOutput(List<Map<String, Object>> records, OutputStream out) throws IOException {
-        try (PrintWriter writer = new PrintWriter(out)) {
-            for (Map<String, Object> record : records) {
-                writer.println(record);
-            }
-        }
+        return writer.toString();
     }
 }

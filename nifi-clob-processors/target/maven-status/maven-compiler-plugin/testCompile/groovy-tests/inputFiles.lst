@@ -1,2 +1,2 @@
-/home/kien/test/nifi-oracle-clob/nifi-clob-processors/src/test/java/com/kiendt/nifi/processors/clob/MyProcessorTest.java
-/home/kien/test/nifi-oracle-clob/nifi-clob-processors/src/test/java/com/kiendt/nifi/processors/clob/TestExecuteSQLRecord.java
+D:\code\clob_oracle\nifi-clob-processors\src\test\java\com\kiendt\nifi\processors\writer\MockRecordWriter.java
+D:\code\clob_oracle\nifi-clob-processors\src\test\java\com\kiendt\nifi\processors\clob\TestExecuteSQLRecord.java

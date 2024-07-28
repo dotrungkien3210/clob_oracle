@@ -5,8 +5,6 @@ import org.apache.nifi.dbcp.DBCPService;
 import org.apache.nifi.expression.ExpressionLanguageScope;
 import org.apache.nifi.processor.util.StandardValidators;
 
-import java.util.List;
-
 public class FlowfileProperties {
 
     public static final PropertyDescriptor DBCP_SERVICE = new PropertyDescriptor.Builder()
@@ -41,42 +39,6 @@ public class FlowfileProperties {
             .sensitive(false)
             .build();
 
-    public static final PropertyDescriptor MAX_ROWS_PER_FLOW_FILE = new PropertyDescriptor.Builder()
-            .name("esql-max-rows")
-            .displayName("Max Rows Per Flow File")
-            .description("The maximum number of result rows that will be included in a single FlowFile. This will allow you to break up very large "
-                    + "result sets into multiple FlowFiles. If the value specified is zero, then all rows are returned in a single FlowFile.")
-            .defaultValue("0")
-            .required(true)
-            .addValidator(StandardValidators.NON_NEGATIVE_INTEGER_VALIDATOR)
-            .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
-            .build();
-
-    public static final PropertyDescriptor OUTPUT_BATCH_SIZE = new PropertyDescriptor.Builder()
-            .name("esql-output-batch-size")
-            .displayName("Output Batch Size")
-            .description("The number of output FlowFiles to queue before committing the process session. When set to zero, the session will be committed when all result set rows "
-                    + "have been processed and the output FlowFiles are ready for transfer to the downstream relationship. For large result sets, this can cause a large burst of FlowFiles "
-                    + "to be transferred at the end of processor execution. If this property is set, then when the specified number of FlowFiles are ready for transfer, then the session will "
-                    + "be committed, thus releasing the FlowFiles to the downstream relationship. NOTE: The fragment.count attribute will not be set on FlowFiles when this "
-                    + "property is set.")
-            .defaultValue("0")
-            .required(true)
-            .addValidator(StandardValidators.NON_NEGATIVE_INTEGER_VALIDATOR)
-            .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
-            .build();
-
-    public static final PropertyDescriptor FETCH_SIZE = new PropertyDescriptor.Builder()
-            .name("esql-fetch-size")
-            .displayName("Fetch Size")
-            .description("The number of result rows to be fetched from the result set at a time. This is a hint to the database driver and may not be "
-                    + "honored and/or exact. If the value specified is zero, then the hint is ignored.")
-            .defaultValue("0")
-            .required(true)
-            .addValidator(StandardValidators.NON_NEGATIVE_INTEGER_VALIDATOR)
-            .expressionLanguageSupported(ExpressionLanguageScope.FLOWFILE_ATTRIBUTES)
-            .build();
-
     public static final PropertyDescriptor AUTO_COMMIT = new PropertyDescriptor.Builder()
             .name("esql-auto-commit")
             .displayName("Set Auto Commit")
@@ -93,6 +55,5 @@ public class FlowfileProperties {
             .required(true)
             .build();
 
-    protected List<PropertyDescriptor> propDescriptors;
 
 }

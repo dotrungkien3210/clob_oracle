@@ -13,7 +13,7 @@ From: 'an unknown organization'
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - brotli4j (https://github.com/hyperxpro/Brotli4j/brotli4j) com.aayushatharva.brotli4j:brotli4j:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - native-linux-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-linux-x86_64) com.aayushatharva.brotli4j:native-linux-x86_64:jar:1.8.0
+  - native-windows-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-windows-x86_64) com.aayushatharva.brotli4j:native-windows-x86_64:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - Jolt Core (http://nexus.sonatype.org/oss-repository-hosting.html/bv-opensource-super-pom/jolt-parent/jolt-core) com.bazaarvoice.jolt:jolt-core:jar:0.1.7
 
@@ -29,6 +29,8 @@ From: 'an unknown organization'
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - FindBugs-jsr305 (http://findbugs.sourceforge.net/) com.google.code.findbugs:jsr305:jar:3.0.2
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Gson (https://github.com/google/gson/gson) com.google.code.gson:gson:jar:2.9.1
+    License: Apache-2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - Guava InternalFutureFailureAccess and InternalFutures (https://github.com/google/guava/failureaccess) com.google.guava:failureaccess:bundle:1.0.1
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Guava: Google Core Libraries for Java (https://github.com/google/guava) com.google.guava:guava:bundle:31.1-jre
@@ -43,12 +45,16 @@ From: 'an unknown organization'
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - JSON.simple (http://code.google.com/p/json-simple/) com.googlecode.json-simple:json-simple:bundle:1.1.1
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - H2 Database Engine (https://h2database.com) com.h2database:h2:jar:2.1.210
+    License: MPL 2.0  (https://www.mozilla.org/en-US/MPL/2.0/)    License: EPL 1.0  (https://opensource.org/licenses/eclipse-1.0.php)
   - asn-one (https://github.com/hierynomus/asn-one) com.hierynomus:asn-one:jar:0.6.0
     License: The Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - sshj (https://github.com/hierynomus/sshj) com.hierynomus:sshj:jar:0.34.0
     License: The Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - project ':json-path' (https://github.com/jayway/JsonPath) com.jayway.jsonpath:json-path:jar:2.6.0
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - ojdbc8 (https://www.oracle.com/database/technologies/maven-central-guide.html) com.oracle.database.jdbc:ojdbc8:jar:19.8.0.0
+    License: Oracle Free Use Terms and Conditions (FUTC)  (https://www.oracle.com/downloads/licenses/oracle-free-license.html)
   - okhttp (https://square.github.io/okhttp/) com.squareup.okhttp3:okhttp:jar:4.10.0
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - okhttp-urlconnection (https://square.github.io/okhttp/) com.squareup.okhttp3:okhttp-urlconnection:jar:4.10.0
@@ -76,8 +82,6 @@ From: 'an unknown organization'
   - Apache Calcite Avatica (https://calcite.apache.org/avatica) org.apache.calcite.avatica:avatica-core:jar:1.22.0
     License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Apache Calcite Avatica Metrics (https://calcite.apache.org/avatica) org.apache.calcite.avatica:avatica-metrics:jar:1.22.0
-    License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
-  - org.apiguardian:apiguardian-api (https://github.com/apiguardian-team/apiguardian) org.apiguardian:apiguardian-api:jar:1.1.2
     License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Bouncy Castle OpenPGP API (https://www.bouncycastle.org/java.html) org.bouncycastle:bcpg-jdk15on:jar:1.70
     License: Bouncy Castle Licence  (https://www.bouncycastle.org/licence.html)    License: Apache Software License, Version 1.1  (https://www.apache.org/licenses/LICENSE-1.1)
@@ -129,6 +133,8 @@ From: 'Apache MINA Project' (https://mina.apache.org/)
 From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-clob-processors (https://nifi.apache.org/nifi-nar-bundles/nifi-oracle-clob/nifi-clob-processors) com.kiendt.nifi:nifi-clob-processors:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
+  - nifi-avro-processors (https://nifi.apache.org/nifi-nar-bundles/nifi-avro-bundle/nifi-avro-processors) org.apache.nifi:nifi-avro-processors:jar:1.20.0
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-avro-record-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-record-utils/nifi-avro-record-utils) org.apache.nifi:nifi-avro-record-utils:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-bin-manager (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-bin-manager) org.apache.nifi:nifi-bin-manager:jar:1.18.0
@@ -148,6 +154,8 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-event-transport (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-event-transport) org.apache.nifi:nifi-event-transport:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-expression-language (https://nifi.apache.org/nifi-commons/nifi-expression-language) org.apache.nifi:nifi-expression-language:jar:1.18.0
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
+  - nifi-extension-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils) org.apache.nifi:nifi-extension-utils:pom:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-flowfile-packager (https://nifi.apache.org/nifi-commons/nifi-flowfile-packager) org.apache.nifi:nifi-flowfile-packager:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)

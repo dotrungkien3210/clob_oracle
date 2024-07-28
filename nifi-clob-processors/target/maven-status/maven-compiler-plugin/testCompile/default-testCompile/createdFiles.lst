@@ -1,2 +1,2 @@
-com/kiendt/nifi/processors/clob/TestExecuteSQLRecord.class
-com/kiendt/nifi/processors/clob/MyProcessorTest.class
+com\kiendt\nifi\processors\writer\MockRecordWriter$1.class
+com\kiendt\nifi\processors\writer\MockRecordWriter.class

@@ -13,7 +13,7 @@ From: 'an unknown organization'
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - brotli4j (https://github.com/hyperxpro/Brotli4j/brotli4j) com.aayushatharva.brotli4j:brotli4j:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - native-linux-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-linux-x86_64) com.aayushatharva.brotli4j:native-linux-x86_64:jar:1.8.0
+  - native-windows-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-windows-x86_64) com.aayushatharva.brotli4j:native-windows-x86_64:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - Jolt Core (http://nexus.sonatype.org/oss-repository-hosting.html/bv-opensource-super-pom/jolt-parent/jolt-core) com.bazaarvoice.jolt:jolt-core:jar:0.1.7
 
@@ -29,6 +29,8 @@ From: 'an unknown organization'
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - FindBugs-jsr305 (http://findbugs.sourceforge.net/) com.google.code.findbugs:jsr305:jar:3.0.2
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Gson (https://github.com/google/gson/gson) com.google.code.gson:gson:jar:2.8.9
+    License: Apache-2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - Guava InternalFutureFailureAccess and InternalFutures (https://github.com/google/guava/failureaccess) com.google.guava:failureaccess:bundle:1.0.1
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Guava: Google Core Libraries for Java (https://github.com/google/guava) com.google.guava:guava:bundle:31.1-jre
@@ -43,12 +45,16 @@ From: 'an unknown organization'
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - JSON.simple (http://code.google.com/p/json-simple/) com.googlecode.json-simple:json-simple:bundle:1.1.1
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - H2 Database Engine (https://h2database.com) com.h2database:h2:jar:2.1.210
+    License: MPL 2.0  (https://www.mozilla.org/en-US/MPL/2.0/)    License: EPL 1.0  (https://opensource.org/licenses/eclipse-1.0.php)
   - asn-one (https://github.com/hierynomus/asn-one) com.hierynomus:asn-one:jar:0.6.0
     License: The Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - sshj (https://github.com/hierynomus/sshj) com.hierynomus:sshj:jar:0.34.0
     License: The Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - project ':json-path' (https://github.com/jayway/JsonPath) com.jayway.jsonpath:json-path:jar:2.6.0
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - ojdbc8 (https://www.oracle.com/database/technologies/maven-central-guide.html) com.oracle.database.jdbc:ojdbc8:jar:19.8.0.0
+    License: Oracle Free Use Terms and Conditions (FUTC)  (https://www.oracle.com/downloads/licenses/oracle-free-license.html)
   - okhttp (https://square.github.io/okhttp/) com.squareup.okhttp3:okhttp:jar:4.10.0
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - okhttp-urlconnection (https://square.github.io/okhttp/) com.squareup.okhttp3:okhttp-urlconnection:jar:4.10.0
@@ -105,12 +111,18 @@ From: 'an unknown organization'
     License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Kotlin Stdlib Jdk8 (https://kotlinlang.org/) org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.7.10
     License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - JUnit Jupiter API (https://junit.org/junit5/) org.junit.jupiter:junit-jupiter-api:jar:5.9.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
+  - JUnit Platform Commons (https://junit.org/junit5/) org.junit.platform:junit-platform-commons:jar:1.9.0
+    License: Eclipse Public License v2.0  (https://www.eclipse.org/legal/epl-v20.html)
   - org.locationtech.jts:jts-core (https://www.locationtech.org/projects/technology.jts/jts-modules/jts-core) org.locationtech.jts:jts-core:bundle:1.19.0
     License: Eclipse Public License, Version 2.0  (https://github.com/locationtech/jts/blob/master/LICENSE_EPLv2.txt)    License: Eclipse Distribution License - v 1.0  (https://github.com/locationtech/jts/blob/master/LICENSE_EDLv1.txt)
   - org.locationtech.jts.io:jts-io-common (https://www.locationtech.org/projects/technology.jts/jts-modules/jts-io/jts-io-common) org.locationtech.jts.io:jts-io-common:jar:1.19.0
     License: Eclipse Public License, Version 2.0  (https://github.com/locationtech/jts/blob/master/LICENSE_EPLv2.txt)    License: Eclipse Distribution License - v 1.0  (https://github.com/locationtech/jts/blob/master/LICENSE_EDLv1.txt)
   - Proj4J (https://github.com/locationtech/proj4j) org.locationtech.proj4j:proj4j:bundle:1.1.5
     License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+  - org.opentest4j:opentest4j (https://github.com/ota4j-team/opentest4j) org.opentest4j:opentest4j:jar:1.2.0
+    License: The Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - XZ for Java (https://tukaani.org/xz/java.html) org.tukaani:xz:jar:1.8
     License: Public Domain 
   - SnakeYAML (https://bitbucket.org/snakeyaml/snakeyaml) org.yaml:snakeyaml:bundle:1.32
@@ -127,6 +139,8 @@ From: 'Apache MINA Project' (https://mina.apache.org/)
     License: Apache 2.0 License  (https://www.apache.org/licenses/LICENSE-2.0)
 
 From: 'Apache NiFi Project' (https://nifi.apache.org/)
+  - nifi-avro-processors (https://nifi.apache.org/nifi-nar-bundles/nifi-avro-bundle/nifi-avro-processors) org.apache.nifi:nifi-avro-processors:jar:1.20.0
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-avro-record-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-record-utils/nifi-avro-record-utils) org.apache.nifi:nifi-avro-record-utils:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-bin-manager (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-bin-manager) org.apache.nifi:nifi-bin-manager:jar:1.18.0
@@ -146,6 +160,8 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-event-transport (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-event-transport) org.apache.nifi:nifi-event-transport:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-expression-language (https://nifi.apache.org/nifi-commons/nifi-expression-language) org.apache.nifi:nifi-expression-language:jar:1.20.0
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
+  - nifi-extension-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils) org.apache.nifi:nifi-extension-utils:pom:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-flowfile-packager (https://nifi.apache.org/nifi-commons/nifi-flowfile-packager) org.apache.nifi:nifi-flowfile-packager:jar:1.18.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
@@ -271,6 +287,10 @@ From: 'OW2' (http://www.ow2.org/)
 From: 'palindromicity' (https://github.com/palindromicity)
   - simple-syslog-5424 (https://github.com/palindromicity) com.github.palindromicity:simple-syslog-5424:jar:0.0.16
     License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+From: 'QOS.ch' (http://www.qos.ch)
+  - SLF4J Simple Binding (http://www.slf4j.org) org.slf4j:slf4j-simple:jar:1.7.36
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
 
 From: 'Saxonica' (https://www.saxonica.com/)
   - Saxon-HE (http://www.saxonica.com/) net.sf.saxon:Saxon-HE:jar:10.6
