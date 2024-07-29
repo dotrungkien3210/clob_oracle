@@ -27,19 +27,13 @@ import org.apache.nifi.processor.io.OutputStreamCallback;
 import org.apache.nifi.util.StopWatch;
 import org.apache.nifi.util.db.JdbcCommon;
 import org.apache.nifi.flowfile.attributes.CoreAttributes;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -47,8 +41,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Tags({"example"})
 @CapabilityDescription("Provide a description")
 @SeeAlso({})
-@ReadsAttributes({@ReadsAttribute(attribute="", description="")})
-@WritesAttributes({@WritesAttribute(attribute="", description="")})
+@ReadsAttributes({@ReadsAttribute(attribute = "", description = "")})
+@WritesAttributes({@WritesAttribute(attribute = "", description = "")})
 public class ExtractOracleRecord extends AbstractProcessor {
     public static final String RESULT_ROW_COUNT = "executesql.row.count";
 
@@ -58,6 +52,8 @@ public class ExtractOracleRecord extends AbstractProcessor {
 
     @Override
     protected void init(final ProcessorInitializationContext context) {
+        System.setProperty("user.timezone", "UTC");
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         descriptors = new ArrayList<>();
         descriptors.add(FlowfileProperties.DBCP_SERVICE);
         descriptors.add(FlowfileProperties.SQL_SELECT_QUERY);
@@ -82,12 +78,19 @@ public class ExtractOracleRecord extends AbstractProcessor {
     }
 
     @OnScheduled
-    public void onScheduled(final ProcessContext context) {
-
+    public void setup(ProcessContext context) {
+        // If the query is not set, then an incoming flow file is needed. Otherwise fail the initialization
+        if (!context.getProperty(FlowfileProperties.SQL_SELECT_QUERY).isSet() && !context.hasIncomingConnection()) {
+            final String errorString = "Either the Select Query must be specified or there must be an incoming connection "
+                    + "providing flowfile(s) containing a SQL select query";
+            getLogger().error(errorString);
+            throw new ProcessException(errorString);
+        }
     }
 
     @Override
     public void onTrigger(final ProcessContext context, final ProcessSession session) {
+        final ComponentLog logger = getLogger();
         FlowFile fileToProcess = null;
         if (context.hasIncomingConnection()) {
             fileToProcess = session.get();
@@ -98,84 +101,88 @@ public class ExtractOracleRecord extends AbstractProcessor {
             if (fileToProcess == null && context.hasNonLoopConnection()) {
                 return;
             }
+        }
 
-            final ComponentLog logger = getLogger();
-            final DBCPService dbcpService = context.getProperty(FlowfileProperties.DBCP_SERVICE).asControllerService(DBCPService.class);
-            final int queryTimeout = context.getProperty(FlowfileProperties.QUERY_TIMEOUT).asTimePeriod(TimeUnit.SECONDS).intValue();
-            final StopWatch stopWatch = new StopWatch(true);
-            final String selectQuery;
+        final DBCPService dbcpService = context.getProperty(FlowfileProperties.DBCP_SERVICE).asControllerService(DBCPService.class);
+        final int queryTimeout = context.getProperty(FlowfileProperties.QUERY_TIMEOUT).asTimePeriod(TimeUnit.SECONDS).intValue();
+        final StopWatch stopWatch = new StopWatch(true);
+        final String selectQuery;
 
-            // get select query
+        // get select query
 
-            if (context.getProperty(FlowfileProperties.SQL_SELECT_QUERY).isSet()) {
-                selectQuery = context.getProperty(FlowfileProperties.SQL_SELECT_QUERY).evaluateAttributeExpressions(fileToProcess).getValue();
-            } else {
-                // If the query is not set, then an incoming flow file is required, and expected to contain a valid SQL select query.
-                // If there is no incoming connection, onTrigger will not be called as the processor will fail when scheduled.
-                final StringBuilder queryContents = new StringBuilder();
-                session.read(fileToProcess, in -> queryContents.append(IOUtils.toString(in)));
-                selectQuery = queryContents.toString();
+        if (context.getProperty(FlowfileProperties.SQL_SELECT_QUERY).isSet()) {
+            selectQuery = context.getProperty(FlowfileProperties.SQL_SELECT_QUERY).evaluateAttributeExpressions(fileToProcess).getValue();
+        } else {
+            // If the query is not set, then an incoming flow file is required, and expected to contain a valid SQL select query.
+            // If there is no incoming connection, onTrigger will not be called as the processor will fail when scheduled.
+            final StringBuilder queryContents = new StringBuilder();
+            session.read(fileToProcess, in -> queryContents.append(IOUtils.toString(in)));
+            selectQuery = queryContents.toString();
+        }
+
+
+        try (final Connection con = dbcpService.getConnection(); final Statement st = con.createStatement()) {
+
+            st.setQueryTimeout(queryTimeout); // timeout in seconds
+            final AtomicLong nrOfRows = new AtomicLong(0L);
+            if (fileToProcess == null) {
+                fileToProcess = session.create();
             }
+            fileToProcess = session.write(fileToProcess, new OutputStreamCallback() {
+                @Override
+                public void process(final OutputStream out) throws IOException {
+//                    JsonFactory jsonFactory = new JsonFactory().setRootValueSeparator(null);
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            try (final Connection con = dbcpService.getConnection();
-                 final Statement st = con.createStatement()) {
-                st.setQueryTimeout(queryTimeout); // timeout in seconds
-                final AtomicLong nrOfRows = new AtomicLong(0L);
-                if (fileToProcess == null) {
-                    fileToProcess = session.create();
-                }
-                fileToProcess = session.write(fileToProcess, new OutputStreamCallback() {
-                    @Override
-                    public void process(final OutputStream out) throws IOException {
-                        JsonFactory jsonFactory = new JsonFactory().setRootValueSeparator(null);
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    JsonGenerator jsonGen = jsonFactory.createGenerator(baos);
+                    try {
+                        logger.debug("Executing query {}", new Object[]{selectQuery});
+                        final ResultSet resultSet = st.executeQuery(selectQuery);
 
-                        JsonGenerator jsonGen = jsonFactory.createGenerator(baos);
-
-                        try {
-                            logger.debug("Executing query {}", new Object[]{selectQuery});
-                            final ResultSet resultSet = st.executeQuery(selectQuery);
-
-                            String jsonString = resultSetToJson(resultSet);
-                            jsonGen.writeString(jsonString);
-                            jsonGen.flush();
-                            baos.writeTo(out);
-                        } catch (final SQLException e) {
-                            throw new ProcessException(e);
-                        }
+                        String jsonString = resultSetToJson(resultSet);
+                        logger.info("sau khi fetch: "+jsonString);
+//                        jsonGen.writeString(jsonString);
+//                        jsonGen.flush();
+                        out.write(jsonString.getBytes());
+//                        baos.writeTo(out);
+                    } catch (final SQLException e) {
+                        throw new ProcessException(e);
                     }
-                });
+                }
+            });
 
-                // set attribute how many rows were selected
-                fileToProcess = session.putAttribute(fileToProcess, RESULT_ROW_COUNT, String.valueOf(nrOfRows.get()));
-                fileToProcess = session.putAttribute(fileToProcess, CoreAttributes.MIME_TYPE.key(), JdbcCommon.MIME_TYPE_AVRO_BINARY);
+            // set attribute how many rows were selected
+            fileToProcess = session.putAttribute(fileToProcess, RESULT_ROW_COUNT, String.valueOf(nrOfRows.get()));
+            fileToProcess = session.putAttribute(fileToProcess, CoreAttributes.MIME_TYPE.key(), JdbcCommon.MIME_TYPE_AVRO_BINARY);
 
-                logger.info("{} contains {} records; transferring to 'success'",
-                        new Object[]{fileToProcess, nrOfRows.get()});
-                session.getProvenanceReporter().modifyContent(fileToProcess, "Retrieved " + nrOfRows.get() + " rows",
-                        stopWatch.getElapsed(TimeUnit.MILLISECONDS));
-                session.transfer(fileToProcess, FlowfileRelationships.REL_SUCCESS);
-            } catch (final ProcessException | SQLException e) {
-                if (fileToProcess == null) {
-                    // This can happen if any exceptions occur while setting up the connection, statement, etc.
-                    logger.error("Unable to execute SQL select query {} due to {}. No FlowFile to route to failure",
+            logger.info("{} contains {} records; transferring to 'success'",
+                    new Object[]{fileToProcess, nrOfRows.get()});
+            session.getProvenanceReporter().modifyContent(fileToProcess, "Retrieved " + nrOfRows.get() + " rows",
+                    stopWatch.getElapsed(TimeUnit.MILLISECONDS));
+            session.transfer(fileToProcess, FlowfileRelationships.REL_SUCCESS);
+        } catch (final ProcessException | SQLException e) {
+            if (fileToProcess == null) {
+                // This can happen if any exceptions occur while setting up the connection, statement, etc.
+                logger.error("Unable to execute SQL select query {} due to {}. No FlowFile to route to failure",
+                        new Object[]{selectQuery, e});
+                context.yield();
+            } else {
+                if (context.hasIncomingConnection()) {
+                    logger.error("Unable to execute SQL select query {} for {} due to {}; routing to failure",
+                            new Object[]{selectQuery, fileToProcess, e});
+                    fileToProcess = session.penalize(fileToProcess);
+                } else {
+                    logger.error("Unable to execute SQL select query {} due to {}; routing to failure",
                             new Object[]{selectQuery, e});
                     context.yield();
-                } else {
-                    if (context.hasIncomingConnection()) {
-                        logger.error("Unable to execute SQL select query {} for {} due to {}; routing to failure",
-                                new Object[]{selectQuery, fileToProcess, e});
-                        fileToProcess = session.penalize(fileToProcess);
-                    } else {
-                        logger.error("Unable to execute SQL select query {} due to {}; routing to failure",
-                                new Object[]{selectQuery, e});
-                        context.yield();
-                    }
-                    session.transfer(fileToProcess, FlowfileRelationships.REL_FAILURE);
                 }
+                session.transfer(fileToProcess, FlowfileRelationships.REL_FAILURE);
             }
         }
     }
+
+
+    // Đưa về
 
     public static String resultSetToJson(ResultSet resultSet) throws SQLException {
         StringWriter writer = new StringWriter();
@@ -189,7 +196,12 @@ public class ExtractOracleRecord extends AbstractProcessor {
                 jsonGenerator.writeStartObject();
                 for (int i = 1; i <= columnCount; i++) {
                     String columnName = resultSet.getMetaData().getColumnName(i);
+                    System.out.println(columnName);
                     Object columnValue = resultSet.getObject(i);
+                    if (columnValue instanceof Clob){
+                        columnValue = convertClobToString((Clob) columnValue);
+                    }
+                    System.out.println(columnValue.getClass());
                     jsonGenerator.writeObjectField(columnName, columnValue);
                 }
                 jsonGenerator.writeEndObject();
@@ -201,5 +213,18 @@ public class ExtractOracleRecord extends AbstractProcessor {
         }
 
         return writer.toString();
+    }
+
+    // Phương thức chuyển đổi Clob sang String
+    public static String convertClobToString(Clob clob) throws SQLException {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            int length = (int) clob.length();
+            String clobString = clob.getSubString(1, length);
+            stringBuilder.append(clobString);
+        } catch (SQLException e) {
+            throw new SQLException("ERROR When CLOB sang String", e);
+        }
+        return stringBuilder.toString();
     }
 }

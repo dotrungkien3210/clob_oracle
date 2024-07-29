@@ -2,9 +2,8 @@ package com.kiendt.nifi.processors.process;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.sql.Clob;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,16 +11,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.io.StringWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Test {
     public static void main(String[] args) {
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "sys as sysdba";
-        String password = "trungkien123";
+        String url = "jdbc:oracle:thin:@127.0.0.1:9501:xe";
+        String user = "System";
+        String password = "snu@123";
+        System.setProperty("user.timezone", "UTC");
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement()) {
@@ -30,7 +31,7 @@ public class Test {
 //            statement.execute("INSERT INTO test VALUES (1, 'John Doe')");
 //            statement.execute("INSERT INTO test VALUES (2, 'Jane Doe')");
 
-            String selectQuery = "SELECT * FROM test";
+            String selectQuery = "SELECT * FROM clob_test";
             AtomicInteger nrOfRows = new AtomicInteger(0);
 
             FileWriter out = new FileWriter("output.json");
@@ -66,7 +67,12 @@ public class Test {
                 jsonGenerator.writeStartObject();
                 for (int i = 1; i <= columnCount; i++) {
                     String columnName = resultSet.getMetaData().getColumnName(i);
+                    System.out.println(columnName);
                     Object columnValue = resultSet.getObject(i);
+                    if (columnValue instanceof Clob){
+                        columnValue = convertClobToString((Clob) columnValue);
+                    }
+                    System.out.println(columnValue.getClass());
                     jsonGenerator.writeObjectField(columnName, columnValue);
                 }
                 jsonGenerator.writeEndObject();
@@ -79,4 +85,18 @@ public class Test {
 
         return writer.toString();
     }
+
+    // Phương thức chuyển đổi Clob sang String
+    public static String convertClobToString(Clob clob) throws SQLException {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            int length = (int) clob.length();
+            String clobString = clob.getSubString(1, length);
+            stringBuilder.append(clobString);
+        } catch (SQLException e) {
+            throw new SQLException("Lỗi khi chuyển đổi CLOB sang String", e);
+        }
+        return stringBuilder.toString();
+    }
+
 }
