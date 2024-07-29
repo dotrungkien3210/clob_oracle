@@ -131,20 +131,18 @@ public class ExtractOracleRecord extends AbstractProcessor {
             fileToProcess = session.write(fileToProcess, new OutputStreamCallback() {
                 @Override
                 public void process(final OutputStream out) throws IOException {
-//                    JsonFactory jsonFactory = new JsonFactory().setRootValueSeparator(null);
-//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-//                    JsonGenerator jsonGen = jsonFactory.createGenerator(baos);
+                    JsonFactory jsonFactory = new JsonFactory().setRootValueSeparator(null);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    JsonGenerator jsonGen = jsonFactory.createGenerator(baos);
                     try {
                         logger.debug("Executing query {}", new Object[]{selectQuery});
                         final ResultSet resultSet = st.executeQuery(selectQuery);
-
                         String jsonString = resultSetToJson(resultSet);
                         logger.info("sau khi fetch: "+jsonString);
 //                        jsonGen.writeString(jsonString);
-//                        jsonGen.flush();
+                        jsonGen.flush();
                         out.write(jsonString.getBytes());
-//                        baos.writeTo(out);
+                        baos.writeTo(out);
                     } catch (final SQLException e) {
                         throw new ProcessException(e);
                     }

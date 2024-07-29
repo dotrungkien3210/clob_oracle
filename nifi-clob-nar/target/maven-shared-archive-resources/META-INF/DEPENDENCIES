@@ -13,7 +13,7 @@ From: 'an unknown organization'
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - brotli4j (https://github.com/hyperxpro/Brotli4j/brotli4j) com.aayushatharva.brotli4j:brotli4j:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - native-linux-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-linux-x86_64) com.aayushatharva.brotli4j:native-linux-x86_64:jar:1.8.0
+  - native-windows-x86_64 (https://github.com/hyperxpro/Brotli4j/natives/native-windows-x86_64) com.aayushatharva.brotli4j:native-windows-x86_64:jar:1.8.0
     License: Apache License 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - Jolt Core (http://nexus.sonatype.org/oss-repository-hosting.html/bv-opensource-super-pom/jolt-parent/jolt-core) com.bazaarvoice.jolt:jolt-core:jar:0.1.7
 
