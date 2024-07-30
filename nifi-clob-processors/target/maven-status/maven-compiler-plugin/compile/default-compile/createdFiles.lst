@@ -1,0 +1,7 @@
+com\kiendt\nifi\processors\clob\FlowfileProperties.class
+com\kiendt\nifi\processors\clob\FlowfileRelationships.class
+com\kiendt\nifi\processors\util\FormatStream.class
+com\kiendt\nifi\processors\util\FormatStream$1.class
+com\kiendt\nifi\processors\process\Test.class
+com\kiendt\nifi\processors\process\ExtractOracleRecord$1.class
+com\kiendt\nifi\processors\process\ExtractOracleRecord.class

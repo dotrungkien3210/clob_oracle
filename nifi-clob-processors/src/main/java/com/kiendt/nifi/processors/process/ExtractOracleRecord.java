@@ -163,13 +163,13 @@ public class ExtractOracleRecord extends AbstractProcessor {
 
 //                        nrOfRows.set(JdbcCommon.convertToAvroStream(resultSet, out, options, null));
 
-//                        out.write(jsonString.getBytes());
+                        out.write(jsonString.getBytes());
 //                        IOUtils.write(jsonString, out, "UTF-8");
 
-//                        jsonGen.writeString(jsonString);
-//                        jsonGen.flush();
-//                        out.write(jsonString.getBytes());
-//                        baos.writeTo(out);
+                        jsonGen.writeString(jsonString);
+                        jsonGen.flush();
+                        out.write(jsonString.getBytes());
+                        baos.writeTo(out);
 
 
                     } catch (final SQLException e) {

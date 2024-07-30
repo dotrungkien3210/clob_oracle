@@ -33,8 +33,6 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-dbcp-service-api (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-api) org.apache.nifi:nifi-dbcp-service-api:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - nifi-extension-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils) org.apache.nifi:nifi-extension-utils:pom:1.20.0
-    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-security-kerberos (https://nifi.apache.org/nifi-commons/nifi-security-kerberos) org.apache.nifi:nifi-security-kerberos:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-security-socket-ssl (https://nifi.apache.org/nifi-commons/nifi-security-socket-ssl) org.apache.nifi:nifi-security-socket-ssl:jar:1.20.0
@@ -42,6 +40,8 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-service-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-service-utils) org.apache.nifi:nifi-service-utils:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-standard-record-utils (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-record-utils/nifi-standard-record-utils) org.apache.nifi:nifi-standard-record-utils:jar:1.20.0
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
+  - nifi-standard-services-api-nar (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-standard-services-api-nar) org.apache.nifi:nifi-standard-services-api-nar:nar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-utils (https://nifi.apache.org/nifi-commons/nifi-utils) org.apache.nifi:nifi-utils:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
@@ -55,12 +55,8 @@ From: 'FasterXML' (http://fasterxml.com/)
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Jackson-core (https://github.com/FasterXML/jackson-core) com.fasterxml.jackson.core:jackson-core:bundle:2.13.4
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
-  - jackson-databind (https://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-databind:jar:2.17.2
-    License: The Apache Software License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
-
-From: 'QOS.ch' (http://www.qos.ch)
-  - SLF4J Simple Binding (http://www.slf4j.org) org.slf4j:slf4j-simple:jar:1.7.25
-    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+  - jackson-databind (http://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-databind:bundle:2.13.4
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 From: 'The Apache Software Foundation' (https://www.apache.org/)
   - Apache Commons Codec (https://commons.apache.org/proper/commons-codec/) commons-codec:commons-codec:jar:1.15
