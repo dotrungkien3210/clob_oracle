@@ -55,5 +55,22 @@ public class FlowfileProperties {
             .required(true)
             .build();
 
+    public static final PropertyDescriptor AVRO_SCHEMA = new PropertyDescriptor
+            .Builder().name("AVRO_SCHEMA")
+            .displayName("Avro Schema")
+            .description("Specify the schema if the FlowFile format is Avro.")
+            .required(false)
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+            .build();
+
+    public static final PropertyDescriptor AVRO_OPTION = new PropertyDescriptor
+            .Builder().name("AVRO_OPTION")
+            .displayName("Avro Option")
+            .description("Choose option input.")
+            .required(true)
+            .allowableValues("true", "false")
+            .defaultValue("true")
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+            .build();
 
 }

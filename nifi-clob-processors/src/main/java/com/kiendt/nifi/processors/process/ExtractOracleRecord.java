@@ -2,8 +2,11 @@ package com.kiendt.nifi.processors.process;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.kiendt.nifi.processors.clob.FlowfileProperties;
 import com.kiendt.nifi.processors.clob.FlowfileRelationships;
+import com.kiendt.nifi.processors.util.FormatStream;
+import org.apache.avro.Schema;
 import org.apache.commons.io.IOUtils;
 import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.dbcp.DBCPService;
@@ -24,14 +27,12 @@ import org.apache.nifi.processor.ProcessorInitializationContext;
 import org.apache.nifi.processor.Relationship;
 import org.apache.nifi.processor.exception.ProcessException;
 import org.apache.nifi.processor.io.OutputStreamCallback;
+import org.apache.nifi.processor.io.StreamCallback;
 import org.apache.nifi.util.StopWatch;
 import org.apache.nifi.util.db.JdbcCommon;
 import org.apache.nifi.flowfile.attributes.CoreAttributes;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +60,8 @@ public class ExtractOracleRecord extends AbstractProcessor {
         descriptors.add(FlowfileProperties.SQL_SELECT_QUERY);
         descriptors.add(FlowfileProperties.QUERY_TIMEOUT);
         descriptors.add(FlowfileProperties.AUTO_COMMIT);
+        descriptors.add(FlowfileProperties.AVRO_OPTION);
+        descriptors.add(FlowfileProperties.AVRO_SCHEMA);
         descriptors = Collections.unmodifiableList(descriptors);
 
         relationships = new HashSet<>();
@@ -90,22 +93,24 @@ public class ExtractOracleRecord extends AbstractProcessor {
 
     @Override
     public void onTrigger(final ProcessContext context, final ProcessSession session) {
+
+
         final ComponentLog logger = getLogger();
         FlowFile fileToProcess = null;
         if (context.hasIncomingConnection()) {
             fileToProcess = session.get();
-
-            // If we have no FlowFile, and all incoming connections are self-loops then we can continue on.
-            // However, if we have no FlowFile and we have connections coming from other Processors, then
-            // we know that we should run only if we have a FlowFile.
             if (fileToProcess == null && context.hasNonLoopConnection()) {
                 return;
             }
         }
 
+        // lấy các properties tại đây
         final DBCPService dbcpService = context.getProperty(FlowfileProperties.DBCP_SERVICE).asControllerService(DBCPService.class);
         final int queryTimeout = context.getProperty(FlowfileProperties.QUERY_TIMEOUT).asTimePeriod(TimeUnit.SECONDS).intValue();
         final StopWatch stopWatch = new StopWatch(true);
+        final String schemaString = context.getProperty(FlowfileProperties.AVRO_SCHEMA).evaluateAttributeExpressions(fileToProcess).getValue();
+        final String schemaOption = context.getProperty(FlowfileProperties.AVRO_OPTION).evaluateAttributeExpressions(fileToProcess).getValue();
+
         final String selectQuery;
 
         // get select query
@@ -128,21 +133,45 @@ public class ExtractOracleRecord extends AbstractProcessor {
             if (fileToProcess == null) {
                 fileToProcess = session.create();
             }
-            fileToProcess = session.write(fileToProcess, new OutputStreamCallback() {
+            fileToProcess = session.write(fileToProcess, new StreamCallback() {
                 @Override
-                public void process(final OutputStream out) throws IOException {
+                public void process(InputStream in, OutputStream out) throws IOException {
                     JsonFactory jsonFactory = new JsonFactory().setRootValueSeparator(null);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    JsonParser jsonParser;
                     JsonGenerator jsonGen = jsonFactory.createGenerator(baos);
+                    Schema schema = null;
+
                     try {
                         logger.debug("Executing query {}", new Object[]{selectQuery});
                         final ResultSet resultSet = st.executeQuery(selectQuery);
                         String jsonString = resultSetToJson(resultSet);
-                        logger.info("sau khi fetch: "+jsonString);
+                        logger.info("sau khi fetch: " + jsonString);
+
+
+                        if (schemaOption.equals("true")) {
+                            try {
+                                schema = new Schema.Parser().parse(schemaString);
+                            } catch (NullPointerException e) {
+                                schema = FormatStream.getEmbeddedSchema(in);
+                                in.reset();
+                            }
+                            jsonGen.flush();
+                            baos = FormatStream.jsonToAvro(baos, schema);
+                            baos.writeTo(out);
+                        }
+
+//                        nrOfRows.set(JdbcCommon.convertToAvroStream(resultSet, out, options, null));
+
+//                        out.write(jsonString.getBytes());
+//                        IOUtils.write(jsonString, out, "UTF-8");
+
 //                        jsonGen.writeString(jsonString);
-                        jsonGen.flush();
-                        out.write(jsonString.getBytes());
-                        baos.writeTo(out);
+//                        jsonGen.flush();
+//                        out.write(jsonString.getBytes());
+//                        baos.writeTo(out);
+
+
                     } catch (final SQLException e) {
                         throw new ProcessException(e);
                     }
@@ -157,7 +186,10 @@ public class ExtractOracleRecord extends AbstractProcessor {
                     new Object[]{fileToProcess, nrOfRows.get()});
             session.getProvenanceReporter().modifyContent(fileToProcess, "Retrieved " + nrOfRows.get() + " rows",
                     stopWatch.getElapsed(TimeUnit.MILLISECONDS));
+
             session.transfer(fileToProcess, FlowfileRelationships.REL_SUCCESS);
+
+
         } catch (final ProcessException | SQLException e) {
             if (fileToProcess == null) {
                 // This can happen if any exceptions occur while setting up the connection, statement, etc.
@@ -179,7 +211,6 @@ public class ExtractOracleRecord extends AbstractProcessor {
         }
     }
 
-
     // Đưa về
 
     public static String resultSetToJson(ResultSet resultSet) throws SQLException {
@@ -196,7 +227,7 @@ public class ExtractOracleRecord extends AbstractProcessor {
                     String columnName = resultSet.getMetaData().getColumnName(i);
                     System.out.println(columnName);
                     Object columnValue = resultSet.getObject(i);
-                    if (columnValue instanceof Clob){
+                    if (columnValue instanceof Clob) {
                         columnValue = convertClobToString((Clob) columnValue);
                     }
                     System.out.println(columnValue.getClass());
