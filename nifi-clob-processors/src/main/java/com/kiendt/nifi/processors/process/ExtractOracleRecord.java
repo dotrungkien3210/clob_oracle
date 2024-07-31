@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.kiendt.nifi.processors.clob.FlowfileProperties;
 import com.kiendt.nifi.processors.clob.FlowfileRelationships;
-import com.kiendt.nifi.processors.util.FormatStream;
 import org.apache.avro.Schema;
 import org.apache.commons.io.IOUtils;
 import org.apache.nifi.components.PropertyDescriptor;
@@ -60,8 +59,7 @@ public class ExtractOracleRecord extends AbstractProcessor {
         descriptors.add(FlowfileProperties.SQL_SELECT_QUERY);
         descriptors.add(FlowfileProperties.QUERY_TIMEOUT);
         descriptors.add(FlowfileProperties.AUTO_COMMIT);
-        descriptors.add(FlowfileProperties.AVRO_OPTION);
-        descriptors.add(FlowfileProperties.AVRO_SCHEMA);
+
         descriptors = Collections.unmodifiableList(descriptors);
 
         relationships = new HashSet<>();
@@ -108,8 +106,6 @@ public class ExtractOracleRecord extends AbstractProcessor {
         final DBCPService dbcpService = context.getProperty(FlowfileProperties.DBCP_SERVICE).asControllerService(DBCPService.class);
         final int queryTimeout = context.getProperty(FlowfileProperties.QUERY_TIMEOUT).asTimePeriod(TimeUnit.SECONDS).intValue();
         final StopWatch stopWatch = new StopWatch(true);
-        final String schemaString = context.getProperty(FlowfileProperties.AVRO_SCHEMA).evaluateAttributeExpressions(fileToProcess).getValue();
-        final String schemaOption = context.getProperty(FlowfileProperties.AVRO_OPTION).evaluateAttributeExpressions(fileToProcess).getValue();
 
         final String selectQuery;
 
@@ -148,29 +144,7 @@ public class ExtractOracleRecord extends AbstractProcessor {
                         String jsonString = resultSetToJson(resultSet);
                         logger.info("sau khi fetch: " + jsonString);
 
-
-                        if (schemaOption.equals("true")) {
-                            try {
-                                schema = new Schema.Parser().parse(schemaString);
-                            } catch (NullPointerException e) {
-                                schema = FormatStream.getEmbeddedSchema(in);
-                                in.reset();
-                            }
-                            jsonGen.flush();
-                            baos = FormatStream.jsonToAvro(baos, schema);
-                            baos.writeTo(out);
-                        }
-
-//                        nrOfRows.set(JdbcCommon.convertToAvroStream(resultSet, out, options, null));
-
                         out.write(jsonString.getBytes());
-//                        IOUtils.write(jsonString, out, "UTF-8");
-
-                        jsonGen.writeString(jsonString);
-                        jsonGen.flush();
-                        out.write(jsonString.getBytes());
-                        baos.writeTo(out);
-
 
                     } catch (final SQLException e) {
                         throw new ProcessException(e);

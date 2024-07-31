@@ -11,9 +11,7 @@ From: 'an unknown organization'
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - error-prone annotations (http://nexus.sonatype.org/oss-repository-hosting.html/error_prone_parent/error_prone_annotations) com.google.errorprone:error_prone_annotations:jar:2.3.4
     License: Apache 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
-  - ojdbc8 (https://www.oracle.com/database/technologies/maven-central-guide.html) com.oracle.database.jdbc:ojdbc8:jar:19.8.0.0
-    License: Oracle Free Use Terms and Conditions (FUTC)  (https://www.oracle.com/downloads/licenses/oracle-free-license.html)
-  - avro  org.apache.avro:avro:jar:1.20.0
+  - avro  org.apache.avro:avro:jar:1.8.0.48p
 
   - Bouncy Castle Provider (https://www.bouncycastle.org/java.html) org.bouncycastle:bcprov-jdk18on:jar:1.71
     License: Bouncy Castle Licence  (https://www.bouncycastle.org/licence.html)
@@ -30,8 +28,6 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-dbcp-base (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-dbcp-base) org.apache.nifi:nifi-dbcp-base:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-dbcp-service (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-bundle/nifi-dbcp-service) org.apache.nifi:nifi-dbcp-service:jar:1.20.0
-    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - nifi-dbcp-service-api (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-api) org.apache.nifi:nifi-dbcp-service-api:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-security-kerberos (https://nifi.apache.org/nifi-commons/nifi-security-kerberos) org.apache.nifi:nifi-security-kerberos:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
@@ -55,8 +51,8 @@ From: 'FasterXML' (http://fasterxml.com/)
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
   - Jackson-core (https://github.com/FasterXML/jackson-core) com.fasterxml.jackson.core:jackson-core:bundle:2.13.4
     License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
-  - jackson-databind (http://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-databind:bundle:2.13.4
-    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - jackson-databind (https://github.com/FasterXML/jackson) com.fasterxml.jackson.core:jackson-databind:jar:2.17.2
+    License: The Apache Software License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 From: 'The Apache Software Foundation' (https://www.apache.org/)
   - Apache Commons Codec (https://commons.apache.org/proper/commons-codec/) commons-codec:commons-codec:jar:1.15

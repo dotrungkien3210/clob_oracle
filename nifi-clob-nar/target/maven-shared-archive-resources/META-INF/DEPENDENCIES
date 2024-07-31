@@ -11,8 +11,6 @@ From: 'an unknown organization'
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
   - error-prone annotations (http://nexus.sonatype.org/oss-repository-hosting.html/error_prone_parent/error_prone_annotations) com.google.errorprone:error_prone_annotations:jar:2.3.4
     License: Apache 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
-  - ojdbc8 (https://www.oracle.com/database/technologies/maven-central-guide.html) com.oracle.database.jdbc:ojdbc8:jar:19.8.0.0
-    License: Oracle Free Use Terms and Conditions (FUTC)  (https://www.oracle.com/downloads/licenses/oracle-free-license.html)
   - Bouncy Castle Provider (https://www.bouncycastle.org/java.html) org.bouncycastle:bcprov-jdk18on:jar:1.71
     License: Bouncy Castle Licence  (https://www.bouncycastle.org/licence.html)
   - Checker Qual (https://checkerframework.org) org.checkerframework:checker-qual:jar:3.1.0
@@ -30,8 +28,6 @@ From: 'Apache NiFi Project' (https://nifi.apache.org/)
   - nifi-dbcp-base (https://nifi.apache.org/nifi-nar-bundles/nifi-extension-utils/nifi-dbcp-base) org.apache.nifi:nifi-dbcp-base:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-dbcp-service (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-bundle/nifi-dbcp-service) org.apache.nifi:nifi-dbcp-service:jar:1.20.0
-    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
-  - nifi-dbcp-service-api (https://nifi.apache.org/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-api) org.apache.nifi:nifi-dbcp-service-api:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
   - nifi-security-kerberos (https://nifi.apache.org/nifi-commons/nifi-security-kerberos) org.apache.nifi:nifi-security-kerberos:jar:1.20.0
     License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0)
