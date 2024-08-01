@@ -199,12 +199,10 @@ public class ExtractOracleRecord extends AbstractProcessor {
                 jsonGenerator.writeStartObject();
                 for (int i = 1; i <= columnCount; i++) {
                     String columnName = resultSet.getMetaData().getColumnName(i);
-                    System.out.println(columnName);
                     Object columnValue = resultSet.getObject(i);
                     if (columnValue instanceof Clob) {
                         columnValue = convertClobToString((Clob) columnValue);
                     }
-                    System.out.println(columnValue.getClass());
                     jsonGenerator.writeObjectField(columnName, columnValue);
                 }
                 jsonGenerator.writeEndObject();
