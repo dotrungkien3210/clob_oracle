@@ -40,16 +40,25 @@ mvn validate
 mvn clean install
 ```
 Nếu thành công, một file nar sẽ được lưu trong folder nar
+
 ![img_1.png](docs/images/img_1.png)
+
 Thực hiện copy file nar vào thư mục lib của nifi, sau đó khởi động lại chương trình nifi
+
 ![img.png](docs/images/img.png)
+
 Tìm tới Processor ExtractOracleRecord, setup các Properties và Controller Service
 
 Properties
+
 ![img_2.png](docs/images/img_2.png)
+
 Controller Service (Chú ý rằng mới chỉ thực hiện xử lý câu lệnh select)
+
 ![img_3.png](docs/images/img_3.png)
+
 Chạy thử và nhận kết quả
+
 ![img_4.png](docs/images/img_4.png)
 
 
@@ -58,6 +67,9 @@ Hiện chưa thể đưa về một output có kiểu dữ liệu hoàn chỉnh,
 Output hiện tại vẫn có dạng String và phải thêm một processor nữa để xử lý
 
 PartitionRecord
+
 ![img_5.png](docs/images/img_5.png)
+
 Config gợi ý
+
 ![img_6.png](docs/images/img_6.png)
