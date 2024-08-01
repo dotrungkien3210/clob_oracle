@@ -73,3 +73,7 @@ PartitionRecord
 Config gợi ý
 
 ![img_6.png](docs/images/img_6.png)
+
+Kết quả cuối cùng
+
+![img.png](docs/images/img7.png)
