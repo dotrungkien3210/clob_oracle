@@ -42,7 +42,7 @@ mvn clean install
 Nếu thành công, một file nar sẽ được lưu trong folder nar
 ![img_1.png](docs/images/img_1.png)
 Thực hiện copy file nar vào thư mục lib của nifi, sau đó khởi động lại chương trình nifi
-![img.png](img.png)
+![img.png](docs/images/img.png)
 Tìm tới Processor ExtractOracleRecord, setup các Properties và Controller Service
 
 Properties
